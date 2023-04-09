@@ -22,9 +22,9 @@ PubSubClient client(espClient);
 int activeTarget = 1;
 
 void switchRelay() {
-  digitalWrite(RELAY, LOW);
-  delay(ENABLE_DELAY);
   digitalWrite(RELAY, HIGH);
+  delay(ENABLE_DELAY);
+  digitalWrite(RELAY, LOW);
 }
 
 void publishTopics() {
@@ -100,8 +100,8 @@ void setup() {
   Serial.println();
 
   // Setup pin
+  digitalWrite(RELAY, LOW);
   pinMode(RELAY, OUTPUT);
-  digitalWrite(RELAY, HIGH);
 
   // Setup wifi
   WiFi.begin(ssid, password);
