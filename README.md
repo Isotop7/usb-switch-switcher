@@ -20,7 +20,7 @@ RELAY:
 VCC -> 5V rail
 ground pin -> ground rail
 Middle pin -> ground pin of octocoupler? (Green cable in picture cabling.jpg)
-Normally closed (NC) -> pin of smd switch (Black cable in picture cabling.jpg)
+Normally open (NO) -> pin of smd switch (Black cable in picture cabling.jpg)
 
 Broken out micro usb:
 Ground pin -> ground rail
