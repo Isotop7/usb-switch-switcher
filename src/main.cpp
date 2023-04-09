@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <ESP8266mDNS.h>
+#include <ESP8266HTTPUpdateServer.h>
 
 #include "Settings.h"
 
@@ -16,8 +18,16 @@ const char *mqtt_broker = MQTT_BROKER;
 const char *mqtt_user = MQTT_USER;
 const char *mqtt_password = MQTT_PASSWORD;
 
+const char *ota_hostname = OTA_HOSTNAME;
+const char *ota_username = OTA_USERNAME;
+const char *ota_password = OTA_PASSWORD;
+const char *firmware_version = "1.1.1";
+
 WiFiClient espClient;
 PubSubClient client(espClient);
+ESP8266WebServer httpServer(80);
+ESP8266HTTPUpdateServer httpUpdater;
+
 // Default active USB target is 1
 int activeTarget = 1;
 
@@ -94,6 +104,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   switchUSBTarget(topic, msg, ENABLE_DELAY);
 }
 
+void handleRoot() {
+  String response = F("<!DOCTYPE html>\n"
+              "<html lang='en'>\n"
+              "<head>\n"
+              "<title>usb-switch-switcher</title>\n"
+              "</head>\n"
+              "<link rel=\"stylesheet\" href=\"https://unpkg.com/sakura.css/css/sakura.css\" type=\"text/css\">\n" 
+              "<body>\n"
+              "<h1>usb-switch-switcher</h1>\r\n");
+  response = response + "<h2>firmware version: " + firmware_version + "</h2>\r\n";
+  response = response + "<p>current active usb source:\r\n<b>device on port " + activeTarget + "</b></p>";
+  response = response + "</body></html>";
+  httpServer.send(200, "text/html", response);
+}
+
 void setup() {
   // Setup console
   Serial.begin(9600);
@@ -115,6 +140,16 @@ void setup() {
   Serial.print("+ Connected, IP address: ");
   Serial.println(WiFi.localIP());
 
+  // Setup dns discovery
+  MDNS.begin(ota_hostname);
+  MDNS.addService("http", "tcp", 80);
+  // Setup http update server with credentials
+  httpUpdater.setup(&httpServer, ota_username, ota_password);
+  // Add root handler
+  httpServer.on("/", handleRoot);
+  httpServer.begin();
+  Serial.printf("+ HTTPUpdateServer ready! Open http://%s.local/update in your browser\n", ota_hostname);
+
   // Setup mqtt connection
   client.setServer(mqtt_broker, 1883);
   client.setCallback(callback);
@@ -135,6 +170,8 @@ void loop() {
         }
     }
     client.loop();
+    httpServer.handleClient();
+    MDNS.update();
 }
 
 
