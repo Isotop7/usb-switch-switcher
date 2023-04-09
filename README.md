@@ -5,7 +5,8 @@ We combine a small Wemos D1 Mini and a dumb UGREEN usb switch to control the sel
 ## hardware
 
 We use the UGREEN 2 to 4 USB 3.0 switch: [https://de.ugreen.com/products/ugreen-usb-switch](https://de.ugreen.com/products/ugreen-usb-switch-2pc-usb-3-0-switcher-2-in-4-out-usb-kvm-switch-mit-2-usb-3-0-a-auf-a-kabeln-fur-tastatur-maus-drucker-scanner-usb-sticks-usw) and a Wemos D1 mini. Any other esp8266-based microcontroller with wifi should work too.
-We also need a KY-019 relay like this one: [https://www.amazon.de/ARCELI-ST%C3%9CCKE-KY-019-Relaismodul-arduino](https://www.amazon.de/ARCELI-ST%C3%9CCKE-KY-019-Relaismodul-arduino).
+
+The relay used is a KY-019 relay like this one: [https://www.amazon.de/ARCELI-ST%C3%9CCKE-KY-019-Relaismodul-arduino](https://www.amazon.de/ARCELI-ST%C3%9CCKE-KY-019-Relaismodul-arduino).
 
 The hardware is connected like this:
 
@@ -18,8 +19,8 @@ ESP8266 5V in -> 5V rail
 RELAY:
 VCC -> 5V rail
 ground pin -> ground rail
-Middle pin -> ground pin of octocoupler?
-Normally closed (NC) -> pin of smd switch
+Middle pin -> ground pin of octocoupler? (Green cable in picture cabling.jpg)
+Normally closed (NC) -> pin of smd switch (Black cable in picture cabling.jpg)
 
 Broken out micro usb:
 Ground pin -> ground rail
@@ -82,7 +83,12 @@ In Homebridge we need the plugin `homebridge-mqttthing`. The usb switch can then
 
 Setting `logMqtt` to `true` is optional but logs the changed mqtt values to homebridge. Please adjust `username` and `password` to the correct values for your mqtt broker.
 
+## pictures
+
+![Connection of bridge wires for relay](./resources/img/cabling.jpg)
+
+![Full overview of complete solution](./resources/img/overview.jpg)
+
 ## TODO
 
 - Add Fritzing
-- Add screenshots
