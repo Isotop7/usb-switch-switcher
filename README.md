@@ -39,11 +39,14 @@ This way you dont need additional power.
 Clone the code and add the file `Settings.h` to the folder `include`. Then you have to fill in your correct parameters:
 
 ```cpp
-#define WIFI_SSID ""                    //SSID of your wifi network
-#define WIFI_PSK ""                     //Preshared key of your wifi network
-#define MQTT_BROKER ""                  //IP address of your mqtt broker / homebridge
-#define MQTT_USER ""                    //Username for authenticating to mqtt broker
-#define MQTT_PASSWORD ""                //Password for authenticating to mqtt broker
+#define WIFI_SSID ""                    // SSID of your wifi network
+#define WIFI_PSK ""                     // Preshared key of your wifi network
+#define MQTT_BROKER ""                  // IP address of your mqtt broker / homebridge
+#define MQTT_USER ""                    // Username for authenticating to mqtt broker
+#define MQTT_PASSWORD ""                // Password for authenticating to mqtt broker
+#define OTA_HOSTNAME ""                 // Hostname to reach HTTPUpdateServer
+#define OTA_USERNAME ""                 // Username for authentication on OTA update server
+#define OTA_PASSWORD ""                 // Password for authentication on OTA update server
 ```
 
 After that you can build the code and flash it to your Wemos.
